@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
@@ -13,11 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./server/prisma/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - devtrack-network
-
-  # Opcional: pgAdmin para gestión visual
   pgadmin:
     image: dpage/pgadmin4:latest
     container_name: devtrack-pgadmin
@@ -31,10 +26,8 @@ services:
       - postgres
     networks:
       - devtrack-network
-
 volumes:
   postgres_data:
-
 networks:
   devtrack-network:
     driver: bridge

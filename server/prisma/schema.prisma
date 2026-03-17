@@ -8,6 +8,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+
 }
 
 model User {
@@ -39,7 +40,6 @@ model Project {
   owner   User         @relation("ProjectOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   users   ProjectUser[]
   columns Column[]
-  tasks   Task[]
 
   @@map("projects")
 }
