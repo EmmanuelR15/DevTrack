@@ -13,19 +13,30 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - devtrack-network
-  pgadmin:
-    image: dpage/pgadmin4:latest
-    container_name: devtrack-pgadmin
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: devtrack-server
     restart: unless-stopped
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@devtrack.com
-      PGADMIN_DEFAULT_PASSWORD: admin123
+      DATABASE_URL: postgresql://devtrack:devtrack123@postgres:5432/devtrack_db
+      JWT_SECRET: devtrack_secret_key_2024
+      JWT_REFRESH_SECRET: devtrack_refresh_secret_key_2024
+      PORT: 3000
+      NODE_ENV: development
+      CORS_ORIGIN: http://localhost:5173
     ports:
-      - "5050:80"
+      - "3000:3000"
     depends_on:
       - postgres
+    volumes:
+      - ./server:/app
+      - /app/node_modules
     networks:
       - devtrack-network
+
 volumes:
   postgres_data:
 networks:
